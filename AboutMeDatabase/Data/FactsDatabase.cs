@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AboutMeDatabase.Models;
+﻿using AboutMeDatabase.Models;
 using SQLite;
+using System;
+using System.Linq;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace AboutMeDatabase.Data
 {
-    public class PersonalItemDatabase
+    public class FactsDatabase
     {
         static readonly Lazy<SQLiteAsyncConnection> lazyInitializer = new Lazy<SQLiteAsyncConnection>(() =>
         {
@@ -17,7 +18,7 @@ namespace AboutMeDatabase.Data
         static SQLiteAsyncConnection Database => lazyInitializer.Value;
         static bool initialized = false;
 
-        public PersonalItemDatabase()
+        public FactsDatabase()
         {
             InitializeAsync().SafeFireAndForget(false);
         }
@@ -26,25 +27,25 @@ namespace AboutMeDatabase.Data
         {
             if (!initialized)
             {
-                if (!Database.TableMappings.Any(m => m.MappedType.Name == typeof(PersonalItem).Name))
+                if (!Database.TableMappings.Any(m => m.MappedType.Name == typeof(FactsAboutMe).Name))
                 {
-                    await Database.CreateTablesAsync(CreateFlags.None, typeof(PersonalItem)).ConfigureAwait(false);
+                    await Database.CreateTablesAsync(CreateFlags.None, typeof(FactsAboutMe)).ConfigureAwait(false);
                 }
                 initialized = true;
             }
         }
 
-        public Task<List<PersonalItem>> GetItemsAsync()
+        public Task<List<FactsAboutMe>> GetItemsAsync()
         {
-            return Database.Table<PersonalItem>().ToListAsync();
+            return Database.Table<FactsAboutMe>().ToListAsync();
         }
 
-        public Task<PersonalItem> GetItemAsync(int id)
+        public Task<FactsAboutMe> GetItemAsync(int id)
         {
-            return Database.Table<PersonalItem>().Where(i => i.ID == id).FirstOrDefaultAsync();
+            return Database.Table<FactsAboutMe>().Where(i => i.ID == id).FirstOrDefaultAsync();
         }
 
-        public Task<int> SaveItemAsync(PersonalItem item)
+        public Task<int> SaveItemAsync(FactsAboutMe item)
         {
             if (item.ID != 0)
             {
@@ -56,18 +57,18 @@ namespace AboutMeDatabase.Data
             }
         }
 
-        public Task<int> InsertList(IEnumerable<PersonalItem> items)
+        public Task<int> InsertList(IEnumerable<FactsAboutMe> items)
         {
             return Database.InsertAllAsync(items);
         }
 
-        public Task<int> DeleteItemAsync(PersonalItem item)
+        public Task<int> DeleteItemAsync(FactsAboutMe item)
         {
             return Database.DeleteAsync(item);
         }
         public Task<int> ClearAllAsync()
         {
-            return Database.DeleteAllAsync<PersonalItem>();
+            return Database.DeleteAllAsync<FactsAboutMe>();
         }
     }
 }

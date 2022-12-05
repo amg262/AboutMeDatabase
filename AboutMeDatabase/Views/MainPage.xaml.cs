@@ -11,15 +11,20 @@ namespace AboutMeDatabase
 {
     public partial class MainPage : ContentPage
     {
+        private object listView;
+
         public MainPage()
         {
             InitializeComponent();
         }
-        protected override async void OnAppearing()
+        void OnSelection(object sender, SelectedItemChangedEventArgs e)
         {
-            base.OnAppearing();
-
-            listView.ItemsSource = await App.Database.GetItemsAsync();
+            if (e.SelectedItem == null)
+            {
+                return;
+            }
+            FactsAboutMe fact = (FactsAboutMe)e.SelectedItem;
+            DisplayAlert("The Fact", fact.TheFact, "Ok");
         }
 
     }

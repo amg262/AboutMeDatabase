@@ -1,11 +1,13 @@
 ﻿using System;
 using System.IO;
+using System.Collections.Generic;
+using System.Text;
 
 namespace AboutMeDatabase
 {
     public static class Constants
     {
-        public const string DatabaseFilename = "AboutMeDB.db3";
+        public const string DatabaseFilename = "AndrewGunn.db3";
 
         public const SQLite.SQLiteOpenFlags Flags =
             // open the database in read/write mode
